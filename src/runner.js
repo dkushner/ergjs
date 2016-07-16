@@ -2,8 +2,13 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
   const registry = {};
 
   function handleDispatch(id, task, context, dependencies) {
-    const rebuilt = eval(task);
-    const rehydrated = JSON.parse(context);
+    let rebuilt = eval(task);
+    
+    if (typeof rebuilt === 'string') {
+      rebuilt = registry[rebuilt];
+    } 
+
+    const rehydrated = (context) ? JSON.parse(context) : null;
     const result = rebuilt.call(this, rehydrated);
 
     postMessage({ id, type: 'dispatch', result });
@@ -12,22 +17,26 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
   function handleRegister(id, name, task) {
     const rehydrated = eval(task);
     
-    registry[name] = rhydrated;
+    registry[name] = rehydrated;
 
     postMessage({ id, type: 'register', result: true });
   }
 
   self.onmessage = ({ data }) => {
-    console.log("[WORKER] Received: ", data);
     const { id, type } = data;
+    console.log(data);
 
-    switch (type) {
-      case 'dispatch': 
-        return handleDispatch(id, data.task, data.context, data.dependencies);
-      case 'register':
-        return handleRegister(id, data.name, data.task);
-      default: 
-        break;
+    try {
+      switch (type) {
+        case 'dispatch': 
+          return handleDispatch(id, data.task, data.context, data.dependencies);
+        case 'register':
+          return handleRegister(id, data.name, data.task);
+        default: 
+          break;
+      }
+    } catch (e) {
+      postMessage({ id, type: 'error', result: e.message });
     }
   };
 

@@ -15,6 +15,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'node_modules/jasmine-promises/dist/jasmine-promises.js',
       'lib/*.js',
       'test/**/*.js'
     ],
