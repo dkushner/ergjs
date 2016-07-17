@@ -144,7 +144,7 @@ class Erg {
       id, 
       type: 'register', 
       name, 
-      task: task.toString()
+      task: `(${task.toString()})`
     });
 
     return new Promise((resolve, reject) => {
@@ -171,7 +171,7 @@ class Erg {
     this.send({
       id,
       type: 'dispatch',
-      task: task.toString(),
+      task: `(${task.toString()})`,
       context: context,
       dependencies
     });
