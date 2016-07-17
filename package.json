@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "Web worker task manager.",
   "main": "lib/index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "gulp build"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/dkushner/erg"
