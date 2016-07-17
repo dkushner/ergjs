@@ -4,6 +4,12 @@
 module.exports = function(config) {
   config.set({
     basePath: '',
+    customLaunchers: {
+      ChromeTravis: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
+    },
     frameworks: ['jasmine'],
     files: [
       'node_modules/jasmine-promises/dist/jasmine-promises.js',
@@ -17,7 +23,10 @@ module.exports = function(config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome', 'Firefox'],
+    browsers: [
+      (process.env.TRAVIS) ? 'ChromeTravis' : 'Chrome', 
+      'Firefox'
+    ],
     singleRun: false,
     concurrency: Infinity
   })
