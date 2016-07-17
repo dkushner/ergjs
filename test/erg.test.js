@@ -89,7 +89,7 @@ describe('Erg', () => {
     var numbers = new Uint8Array(10);
 
     return erg.dispatch(function(values) {
-      values.forEach(function(value, index, set) {
+      Array.prototype.forEach.call(values, function(value, index, set) {
         set[index] = value + 1;
       });
 
