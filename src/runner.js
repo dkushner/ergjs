@@ -8,8 +8,7 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
       rebuilt = registry[rebuilt];
     } 
 
-    const rehydrated = (context) ? JSON.parse(context) : null;
-    const result = rebuilt.call(this, rehydrated);
+    const result = rebuilt.call(null, context);
 
     postMessage({ id, type: 'dispatch', result });
   }
@@ -27,9 +26,9 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
     postMessage({ id, type: 'register', result: true });
   }
 
-  self.onmessage = ({ data }) => {
-    const { id, type } = data;
-    console.log(data);
+  self.onmessage = (message) => {
+    const { id, type } = message.data;
+    const data = message.data;
 
     try {
       switch (type) {

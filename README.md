@@ -1,2 +1,7 @@
 # erg
-Web worker task manager.
+Simplified parallelism in the browser.
+========================
+
+
+
+

@@ -7,10 +7,7 @@ describe('Erg', function() {
     expect(erg).toBeDefined();
     expect(erg.worker).toBeDefined();
 
-    return erg.ready.then(erg => {
-      expect(erg).toBeDefined();
-      expect(erg.connected).toBe(true);
-    });
+    return erg.ready;
   });
 
   it('can load worker source from an indicated base path', function() {
@@ -19,21 +16,16 @@ describe('Erg', function() {
     expect(erg).toBeDefined();
     expect(erg.worker).toBeDefined();
 
-    return erg.ready.then(erg => {
-      expect(erg).toBeDefined();
-      expect(erg.connected).toBe(true);
-    });
+    return erg.ready;
   });
 
   it('dispatches individual tasks for execution on worker', function() {
     var erg = new Erg();
 
-    return erg.ready.then((erg) => {
-      return erg.dispatch((context) => { 
-        return context.value; 
-      }, { 
-        value: 999 
-      });
+    return erg.dispatch((context) => { 
+      return context.value; 
+    }, { 
+      value: 999 
     }).then((result) => {
       expect(result).toBeDefined();
       expect(result).toBe(999);
@@ -43,10 +35,8 @@ describe('Erg', function() {
   it('can handle object task response types', function() {
     var erg = new Erg();
 
-    return erg.ready.then((erg) => {
-      return erg.dispatch((context) => context, { 
-        value: 999 
-      });
+    return erg.dispatch((context) => context, { 
+      value: 999 
     }).then((result) => {
       expect(result).toBeDefined();
       expect(result.value).toBe(999);
@@ -69,8 +59,8 @@ describe('Erg', function() {
   it('allows registering tasks by name for reuse', function() {
     var erg = new Erg();
     
-    return erg.ready.then(() => {
-      return erg.register('value', (context) => { return context.value });
+    return erg.register('value', (context) => { 
+      return context.value 
     }).then(() => {
       return erg.dispatch('value', { value: 999 });
     }).then((result) => {
@@ -94,5 +84,21 @@ describe('Erg', function() {
   it('allows for buffer object transfers as part of context', function() {
     var erg = new Erg();
 
+    var numbers = new Uint8Array(10);
+
+    return erg.dispatch((values) => {
+      values.forEach((value, index, set) => {
+        set[index] = value + 1;
+      });
+
+      return values;
+    }, numbers, [numbers]).then((result) => {
+      expect(result).toBeDefined();
+      expect(result instanceof Uint8Array).toBe(true);
+
+      result.forEach((number) => {
+        expect(number).toBe(1);
+      });
+    });
   });
 });

@@ -12,6 +12,21 @@ try {
   blob = blob.getBlob();
 }
 
+function wait(resolve, reject) {
+  const interval = setInterval(() => {
+    this.connected && resolve(this);
+  }, 100);
+
+  setTimeout(() => {
+    if (this.connected) {
+      resolve(this);
+    } else {
+      clearInterval(interval);
+      reject(`Worker failed to initialize before timeout of ${Erg.WAIT_TIME}.`);
+    }
+  }, Erg.WAIT_TIME);
+}
+
 /**
  * Task manager and worker thread coordinator.
  */
@@ -32,18 +47,13 @@ class Erg {
     }
 
     this.worker.onmessage = this.receive.bind(this);
-
     this.connected = false;
 
-    this.ready = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (this.connected) {
-          resolve(this);
-        } else {
-          reject(`Worker failed to initialize before timeout of ${Erg.WAIT_TIME}.`);
-        }
-      }, Erg.WAIT_TIME);
+    this.ready = new Promise(wait.bind(this)).then(() => {
+      this.queue.forEach(this.send.bind(this));
     });
+
+    this.queue = [];
 
     this.waiting = {};
   }
@@ -84,12 +94,24 @@ class Erg {
   }
 
   /**
+   * Directly posts or queues a raw message payload for the managed 
+   * worker.
+   */
+  send(payload) {
+    if (this.connected) {
+      this.worker.postMessage(payload);
+    } else {
+      this.queue.push(payload);
+    }
+  }
+
+  /**
    * Loads a script file into the managed workers scope.
    */
   load(...paths) {
     const id = Erg.taskId();
 
-    this.worker.postMessage({
+    this.send({
       id,
       type: 'load',
       paths: paths.map((path) => {
@@ -118,7 +140,7 @@ class Erg {
    */
   register(name, task) {
     const id = Erg.taskId();
-    this.worker.postMessage({ 
+    this.send({ 
       id, 
       type: 'register', 
       name, 
@@ -146,11 +168,11 @@ class Erg {
       task = "\"" + task + "\"";
     }
 
-    this.worker.postMessage({
+    this.send({
       id,
       type: 'dispatch',
       task: task.toString(),
-      context: JSON.stringify(context),
+      context: context,
       dependencies
     });
 
