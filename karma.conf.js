@@ -10,11 +10,19 @@ module.exports = function(config) {
         flags: ['--no-sandbox']
       }
     },
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', 'browserify'],
+    preprocessors: {
+      'test/**/*.test.js': ['browserify']
+    },
+    browserify: {
+      debug: true,
+      transform: ['babelify']
+    },
     files: [
       'node_modules/jasmine-promises/dist/jasmine-promises.js',
-      'lib/*.js',
+      'lib/erg.js',
       'test/**/*.test.js',
+      { pattern: 'lib/runner.js', included: false, served: true },
       { pattern: 'test/dependency.js', included: false, served: true }
     ],
     exclude: [ ],
