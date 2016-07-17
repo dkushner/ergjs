@@ -1,0 +1,8 @@
+deploy:
+  provider: npm
+  email: root@davidkushner.me
+  api_key:
+    secure: Pc2rhGVBHHdXHqHHcMoZbtTanQxhNozR5KcZ7X8V1/Xo1ytGM3+95yP4rxvPaAu+gzaNMH0dYvvJUkG/hDlFJ8eFuYjH2ged/Ju5n8KuUmNPPwS8VIB1NC7AuZCjRlqCYSARlAmdFlil655A1ERycA4ydNbpo1IEJ5FFJC2jaQiMZpfwy08bv2JmlHYrBn62Z3W9hMOXdx6pfbOQ/WSyq7Ldljjo/sOOeqJfgKeC4mHtrGefaN0sRvO6XajT73Ztr2g0iFrQ30SkhkQ/dmEweRz/VxpcCt+qqQf+QaOU6VU3xYwYksPGkfol2oo9K7es1p7Q/zs4QlNHnVgQZ7iRA2er4spMwAjy21HaXpYK0GUu1Cjbr9QWydX3b1JtUU+CS1Fja95gSsPRwF0ojvwy3q9UY1rlyi8ptZRBe+u05eRVAa/7JsKzgHZlivlCgyK02xuSDxJairjlMwb0z0f8YzHFEH+rg0TZMQcD/PrkcJnzMceEDP4EC78gYJfS+d82El4CqFQSFC05mkEblwy6DtQXlCpEXfvbIVJPj6S8NMXW96nnB3cc2aD9m7moS49ZT7gOV+9W5bO9/DOxbO/VKC4pycwIOmtOrSh32r4aGtPQ2Y9hHFZlhTm5jssX2mMEJISh4OoFA+82VFU6dwj9ua6KBrY4gL6ShF7X9rNFD5I=
+  on:
+    tags: true
+    repo: dkushner/ergjs
