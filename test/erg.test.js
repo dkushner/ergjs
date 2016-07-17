@@ -1,8 +1,8 @@
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
-describe('Erg', function() {
-  it('loads and initializes the worker on construction', function() {
-    var erg = new Erg();
+describe('Erg', () => {
+  it('loads and initializes the worker on construction', () => {
+    const erg = new Erg();
 
     expect(erg).toBeDefined();
     expect(erg.worker).toBeDefined();
@@ -10,8 +10,8 @@ describe('Erg', function() {
     return erg.ready;
   });
 
-  it('can load worker source from an indicated base path', function() {
-    var erg = new Erg('base/lib');
+  it('can load worker source from an indicated base path', () => {
+    const erg = new Erg('base/lib');
 
     expect(erg).toBeDefined();
     expect(erg.worker).toBeDefined();
@@ -19,8 +19,8 @@ describe('Erg', function() {
     return erg.ready;
   });
 
-  it('dispatches individual tasks for execution on worker', function() {
-    var erg = new Erg();
+  it('dispatches individual tasks for execution on worker', () => {
+    const erg = new Erg();
 
     return erg.dispatch((context) => { 
       return context.value; 
@@ -32,8 +32,8 @@ describe('Erg', function() {
     });
   });
 
-  it('can handle object task response types', function() {
-    var erg = new Erg();
+  it('can handle object task response types', () => {
+    const erg = new Erg();
 
     return erg.dispatch((context) => context, { 
       value: 999 
@@ -43,8 +43,8 @@ describe('Erg', function() {
     });
   });
 
-  it('properly conveys errors in workers', function() {
-    var erg = new Erg();
+  it('properly conveys errors in workers', () => {
+    const erg = new Erg();
 
     return erg.dispatch((context) => {
       throw new Error("Something went wrong.");
@@ -56,7 +56,7 @@ describe('Erg', function() {
     });
   });
 
-  it('allows registering tasks by name for reuse', function() {
+  it('allows registering tasks by name for reuse', () => {
     var erg = new Erg();
     
     return erg.register('value', (context) => { 
@@ -69,7 +69,7 @@ describe('Erg', function() {
     });
   });
   
-  it('allows for loading external script resources', function() {
+  it('allows for loading external script resources', () => {
     var erg = new Erg();
 
     return erg.ready.then(() => {
@@ -81,7 +81,7 @@ describe('Erg', function() {
     });
   });
 
-  it('allows for buffer object transfers as part of context', function() {
+  it('allows for buffer object transfers as part of context', () => {
     var erg = new Erg();
 
     var numbers = new Uint8Array(10);
