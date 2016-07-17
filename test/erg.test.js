@@ -98,7 +98,7 @@ describe('Erg', () => {
       expect(result).toBeDefined();
       expect(result instanceof Uint8Array).toBe(true);
 
-      result.forEach((number) => {
+      Array.prototype.forEach.call(result, (number) => {
         expect(number).toBe(1);
       });
     });
