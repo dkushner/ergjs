@@ -1,0 +1,22 @@
+{
+  "name": "erg",
+  "description": "Web worker task manager.",
+  "main": "lib/erg.js",
+  "authors": [
+    "David Kushner"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "parallel",
+    "webworker",
+    "offline"
+  ],
+  "homepage": "https://github.com/dkushner/ergjs",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
