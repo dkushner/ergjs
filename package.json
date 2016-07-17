@@ -4,7 +4,7 @@
   "description": "Web worker task manager.",
   "main": "lib/index.js",
   "scripts": {
-    "test": "gulp build"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
