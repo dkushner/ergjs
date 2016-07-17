@@ -14,6 +14,11 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
     postMessage({ id, type: 'dispatch', result });
   }
 
+  function handleLoad(id, ...paths) {
+    importScripts.apply(null, paths);
+    postMessage({ id, type: 'load', result: true });
+  }
+
   function handleRegister(id, name, task) {
     const rehydrated = eval(task);
     
@@ -32,6 +37,8 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
           return handleDispatch(id, data.task, data.context, data.dependencies);
         case 'register':
           return handleRegister(id, data.name, data.task);
+        case 'load':
+          return handleLoad(id, data.paths);
         default: 
           break;
       }

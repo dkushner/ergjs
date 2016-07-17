@@ -78,4 +78,21 @@ describe('Erg', function() {
       expect(result).toBe(999);
     });
   });
+  
+  it('allows for loading external script resources', function() {
+    var erg = new Erg();
+
+    return erg.ready.then(() => {
+      return erg.load('base/test/dependency.js');
+    }).then(() => {
+      return erg.dispatch(() => TEST);
+    }).then((result) => {
+      expect(result).toBe("PASS");
+    });
+  });
+
+  it('allows for buffer object transfers as part of context', function() {
+    var erg = new Erg();
+
+  });
 });

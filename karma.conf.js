@@ -17,7 +17,8 @@ module.exports = function(config) {
     files: [
       'node_modules/jasmine-promises/dist/jasmine-promises.js',
       'lib/*.js',
-      'test/**/*.js'
+      'test/**/*.test.js',
+      { pattern: 'test/dependency.js', included: false, served: true }
     ],
 
 

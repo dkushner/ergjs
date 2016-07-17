@@ -72,6 +72,7 @@ class Erg {
       case 'error':
         this.waiting[id].reject(result);
         break;
+      case 'load':
       case 'dispatch': 
       case 'register':
         this.waiting[id].resolve(result);
@@ -80,6 +81,31 @@ class Erg {
       default: 
         break;
     }
+  }
+
+  /**
+   * Loads a script file into the managed workers scope.
+   */
+  load(...paths) {
+    const id = Erg.taskId();
+
+    this.worker.postMessage({
+      id,
+      type: 'load',
+      paths: paths.map((path) => {
+        const root = location.protocol + "//" + location.host;
+
+        if (path[0] === '/') {
+          return root + path;
+        } else {
+          return [root, path].join('/');
+        }
+      })
+    });
+
+    return new Promise((resolve, reject) => {
+      this.waiting[id] = { resolve, reject };
+    });
   }
 
   /**
