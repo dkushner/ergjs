@@ -1,11 +1,9 @@
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
-
 describe('Erg', () => {
   it('loads and initializes the worker on construction', () => {
     const erg = new Erg();
 
-    expect(erg).toBeDefined();
-    expect(erg.worker).toBeDefined();
+    expect(erg).to.be.ok;
+    expect(erg.worker).to.be.ok;
 
     return erg.ready;
   });
@@ -13,8 +11,8 @@ describe('Erg', () => {
   it('can load worker source from an indicated base path', () => {
     const erg = new Erg('base/lib');
 
-    expect(erg).toBeDefined();
-    expect(erg.worker).toBeDefined();
+    expect(erg).to.be.ok;
+    expect(erg.worker).to.be.ok;
 
     return erg.ready;
   });
@@ -27,8 +25,8 @@ describe('Erg', () => {
     }, { 
       value: 999 
     }).then((result) => {
-      expect(result).toBeDefined();
-      expect(result).toBe(999);
+      expect(result).to.be.ok;
+      expect(result).to.equal(999);
     });
   });
 
@@ -40,8 +38,8 @@ describe('Erg', () => {
     }, { 
       value: 999 
     }).then((result) => {
-      expect(result).toBeDefined();
-      expect(result.value).toBe(999);
+      expect(result).to.be.ok;
+      expect(result.value).to.equal(999);
     });
   });
 
@@ -53,8 +51,8 @@ describe('Erg', () => {
     }).then(() =>{
       throw new Error("Something went right.");
     }).catch((err) => {
-      expect(err).toBeDefined();
-      expect(err).toBe("Something went wrong.");
+      expect(err).to.be.ok;
+      expect(err).to.equal("Something went wrong.");
     });
   });
 
@@ -66,8 +64,8 @@ describe('Erg', () => {
     }).then(() => {
       return erg.dispatch('value', { value: 999 });
     }).then((result) => {
-      expect(result).toBeDefined();
-      expect(result).toBe(999);
+      expect(result).to.be.ok;
+      expect(result).to.equal(999);
     });
   });
   
@@ -79,7 +77,7 @@ describe('Erg', () => {
     }).then(() => {
       return erg.dispatch(() => TEST);
     }).then((result) => {
-      expect(result).toBe("PASS");
+      expect(result).to.equal("PASS");
     });
   });
 
@@ -95,11 +93,11 @@ describe('Erg', () => {
 
       return values;
     }, numbers, [numbers]).then((result) => {
-      expect(result).toBeDefined();
-      expect(result instanceof Uint8Array).toBe(true);
+      expect(result).to.be.ok;
+      expect(result).to.be.an.instanceof(Uint8Array);
 
       Array.prototype.forEach.call(result, (number) => {
-        expect(number).toBe(1);
+        expect(number).to.equal(1);
       });
     });
   });

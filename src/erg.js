@@ -84,6 +84,8 @@ class Erg {
         break;
       case 'load':
       case 'dispatch': 
+      case 'map':
+      case 'reduce':
       case 'register':
         this.waiting[id].resolve(result);
         delete this.waiting[id];
@@ -103,6 +105,37 @@ class Erg {
     } else {
       this.queue.push(payload);
     }
+  }
+
+  /**
+   * Maps an array data set using the provided task.
+   */
+  map(data, task) {
+    const id = Erg.taskId();
+    this.send({ 
+      id, 
+      type: 'map', 
+      task: `(${task.toString()})`, 
+      context: data 
+    });
+
+    return new Promise((resolve, reject) => {
+      this.waiting[id] = { resolve, reject };
+    });
+  }
+
+  reduce(data, task) {
+    const id = Erg.taskId();
+    this.send({ 
+      id, 
+      type: 'reduce', 
+      task: `(${task.toString()})`, 
+      context: data 
+    });
+
+    return new Promise((resolve, reject) => {
+      this.waiting[id] = { resolve, reject };
+    });
   }
 
   /**
@@ -165,7 +198,7 @@ class Erg {
     const id = Erg.taskId();
 
     if (typeof task === 'string') {
-      task = "\"" + task + "\"";
+      task = `\"${task}\"`;
     }
 
     this.send({
@@ -184,3 +217,64 @@ class Erg {
 
 Erg.WAIT_TIME = 3000;
 Erg.ID = 0;
+
+class Team {
+  constructor(size) {
+    this.workers = new Array(size).fill().map(() => {
+      return new Erg();
+    });
+
+    this.ready = Promise.all(this.workers.map(worker => worker.ready));
+  }
+
+  scatter(data, task) {
+    if (!Array.isArray(data)) {
+      throw new Error(`Cannot distribute non-array data of type ${typeof data}.`);
+    }
+
+    const subtasks = [];
+    const chunk = Math.ceil(data.length / this.workers.length);
+    for (let i = 0; i < this.workers.length; i++) {
+      const subset = data.slice(i * chunk, (i * chunk) + chunk);
+      subtasks.push(this.workers[i].dispatch(task, subset));
+    }
+
+    return Promise.all(subtasks).then((subsets) => {
+      return Array.prototype.concat.apply([], subsets);
+    });
+  }
+
+  map(data, task) {
+    if (!Array.isArray(data)) {
+      throw new Error(`Cannot distribute non-array data of type ${typeof data}.`);
+    }
+
+    const subtasks = [];
+    const chunk = Math.ceil(data.length / this.workers.length);
+    for (let i = 0; i < this.workers.length; i++) {
+      const subset = data.slice(i * chunk, (i * chunk) + chunk);
+      subtasks.push(this.workers[i].map(subset, task));
+    }
+
+    return Promise.all(subtasks).then((subsets) => {
+      return Array.prototype.concat.apply([], subsets);
+    });
+  }
+
+  reduce(data, task) {
+    if (!Array.isArray(data)) {
+      throw new Error(`Cannot distribute non-array data of type ${typeof data}.`);
+    }
+
+    const subtasks = [];
+    const chunk = Math.ceil(data.length / this.workers.length);
+    for (let i = 0; i < this.workers.length; i++) {
+      const subset = data.slice(i * chunk, (i * chunk) + chunk);
+      subtasks.push(this.workers[i].reduce(subset, task));
+    }
+
+    return Promise.all(subtasks).then((reductions) => {
+      return reductions.reduce(task);
+    });
+  }
+}

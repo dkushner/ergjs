@@ -10,7 +10,7 @@ module.exports = function(config) {
         flags: ['--no-sandbox']
       }
     },
-    frameworks: ['jasmine', 'browserify'],
+    frameworks: ['mocha', 'chai', 'browserify'],
     preprocessors: {
       'test/**/*.test.js': ['browserify']
     },
@@ -19,23 +19,28 @@ module.exports = function(config) {
       transform: ['babelify']
     },
     files: [
-      'node_modules/jasmine-promises/dist/jasmine-promises.js',
       'lib/erg.js',
       'test/**/*.test.js',
       { pattern: 'lib/runner.js', included: false, served: true },
       { pattern: 'test/dependency.js', included: false, served: true }
     ],
     exclude: [ ],
-    reporters: ['progress'],
+    reporters: ['mocha'],
+    client: {
+      mocha: {
+        reporter: 'spec'
+      }
+    },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
-    autoWatch: true,
+    autoWatch: false,
     browsers: [
       (process.env.TRAVIS) ? 'ChromeTravis' : 'Chrome', 
       'Firefox'
     ],
-    singleRun: false,
-    concurrency: Infinity
+    singleRun: true,
+    concurrency: 1,
+    browserNoActivityTimeout: 30000
   })
 }
