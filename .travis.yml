@@ -6,11 +6,12 @@ branches:
   only: 
     - feature/travis
     - master
+addons:
+  sauce_connect:
+    username: dkushner
+    access_key:
+      secure: "aLWsECUkiUA1xzoOaC9mCAOPp8TDJtl1rxixW8fE+6ynrbFiG76HXXTnLGkBvnJHJ6LQ2gEjBGrHgYp6WCqQ3VffMP3ala6UvUn9AsPXn6bmm9yn6fg0xZKgX0z88InlLj0pWHfMp3MDK3INTxNHflv/Fz9hp66pe0LUq6rD1eYG+PxvB6pWrpbYUr3jQ/8Z7RjETB58MjKwld+AgiG9SxVde0OoqG4TTwKoLvOZg+IYWhm7J1LDKKgGO7hQmGjLamOPt5RDu65n6iCz4C6JjbrVvuEP54s1kupNQABCTh9hP9gTKjGeHwHZBDUR1SulLX8Gz6tVM5bTTrG6Oh1DT9waqshvMFHoXNH/SmZvHI57b46JKRtqhSANCa6Awp83rd7JMzbGt+7X3IucCAxlbO5FrREuNYfxky0R+O78cL0i08jqG8IsMA5pbxj9r4hbdJZqO0QEniT+ykpI/NemmOFqsRP3VpVKAeSMb9Nn0Aon7b5GJQyRorH7xRQIn43GQ46IPmGtu4kiTFUlyCQb4N9o5bnDggwY2n3bWjt+BIkf0rbtd0MWK86XndqvcaizamYax08Eiw79VWbb9dQ+8R6/OWAtvin3RpUVTDbBTOVqaEb3n9qq7RU7WEHLffOoUr4SbGzda7iThkv/I2LbvCOpOol3JKuQ2qAKG3MtEKs="
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install -y libappindicator1 fonts-liberation libstdc++6 lsb-base
-  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  - sudo dpkg -i google-chrome*.deb
   - export CHROME_BIN=/usr/bin/google-chrome
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start

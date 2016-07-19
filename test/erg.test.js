@@ -5,7 +5,7 @@ describe('Erg', () => {
     expect(erg).to.be.ok;
     expect(erg.worker).to.be.ok;
 
-    return erg.ready;
+    return erg.shutdown();
   });
 
   it('can load worker source from an indicated base path', () => {
@@ -14,7 +14,7 @@ describe('Erg', () => {
     expect(erg).to.be.ok;
     expect(erg.worker).to.be.ok;
 
-    return erg.ready;
+    return erg.shutdown();
   });
 
   it('dispatches individual tasks for execution on worker', () => {
@@ -27,6 +27,7 @@ describe('Erg', () => {
     }).then((result) => {
       expect(result).to.be.ok;
       expect(result).to.equal(999);
+      return erg.shutdown();
     });
   });
 
@@ -40,6 +41,8 @@ describe('Erg', () => {
     }).then((result) => {
       expect(result).to.be.ok;
       expect(result.value).to.equal(999);
+
+      return erg.shutdown();
     });
   });
 
@@ -53,6 +56,8 @@ describe('Erg', () => {
     }).catch((err) => {
       expect(err).to.be.ok;
       expect(err).to.equal("Something went wrong.");
+      
+      return erg.shutdown();
     });
   });
 
@@ -66,6 +71,8 @@ describe('Erg', () => {
     }).then((result) => {
       expect(result).to.be.ok;
       expect(result).to.equal(999);
+
+      return erg.shutdown();
     });
   });
   
@@ -78,6 +85,8 @@ describe('Erg', () => {
       return erg.dispatch(() => TEST);
     }).then((result) => {
       expect(result).to.equal("PASS");
+
+      return erg.shutdown();
     });
   });
 
@@ -99,6 +108,8 @@ describe('Erg', () => {
       Array.prototype.forEach.call(result, (number) => {
         expect(number).to.equal(1);
       });
+
+      return erg.shutdown();
     });
   });
 });

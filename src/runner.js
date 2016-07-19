@@ -12,6 +12,11 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
     postMessage({ id, type: 'dispatch', result });
   }
 
+  function handleShutdown(id) {
+    postMessage({ id, type: 'shutdown' });
+    close();
+  }
+
   function handleReduce(id, task, data) {
     let rebuilt = eval(task);
 
@@ -61,6 +66,8 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
           return handleMap(id, data.task, data.context);
         case 'reduce':
           return handleReduce(id, data.task, data.context);
+        case 'shutdown':
+          return handleShutdown(id);
         default: 
           break;
       }

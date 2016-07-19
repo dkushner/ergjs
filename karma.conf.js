@@ -5,10 +5,27 @@ module.exports = function(config) {
   config.set({
     basePath: '',
     customLaunchers: {
-      ChromeTravis: {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
+      SLChrome: {
+        base: 'SauceLabs',
+        browserName: 'chrome',
+        platform: 'Windows 7',
+        version: '51'
+      },
+      SLFirefox: {
+        base: 'SauceLabs',
+        browserName: 'firefox',
+        version: '47'
+      },
+      SLEdge: {
+        base: 'SauceLabs',
+        browserName: 'MicrosoftEdge',
+        platform: 'Windows 10',
+        version: '13'
       }
+    },
+    sauceLabs: {
+      testName: 'ErgJS Browser Compatability Tests',
+      startConnect: true
     },
     frameworks: ['mocha', 'chai', 'browserify'],
     preprocessors: {
@@ -25,7 +42,7 @@ module.exports = function(config) {
       { pattern: 'test/dependency.js', included: false, served: true }
     ],
     exclude: [ ],
-    reporters: ['mocha'],
+    reporters: ['mocha', 'saucelabs'],
     client: {
       mocha: {
         reporter: 'spec'
@@ -33,14 +50,11 @@ module.exports = function(config) {
     },
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_DEBUG,
+    browsers: ['SLChrome', 'SLFirefox', 'SLEdge'],
     autoWatch: false,
-    browsers: [
-      (process.env.TRAVIS) ? 'ChromeTravis' : 'Chrome', 
-      'Firefox'
-    ],
     singleRun: true,
     concurrency: 1,
     browserNoActivityTimeout: 30000
-  })
+  });
 }

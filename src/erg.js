@@ -84,6 +84,7 @@ class Erg {
         break;
       case 'load':
       case 'dispatch': 
+      case 'shutdown':
       case 'map':
       case 'reduce':
       case 'register':
@@ -93,6 +94,15 @@ class Erg {
       default: 
         break;
     }
+  }
+
+  shutdown() {
+    const id = Erg.taskId();
+    this.send({ id, type: 'shutdown' });
+
+    return new Promise((resolve, reject) => {
+      this.waiting[id] = { resolve, reject };
+    });
   }
 
   /**
