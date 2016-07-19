@@ -1,3 +1,4 @@
+sudo: true
 language: node_js
 node_js:
   - "6"
@@ -5,8 +6,10 @@ branches:
   only: 
     - feature/travis
     - master
+addons:
+  sauce_connect: true
 before_install:
-  - export CHROME_BIN=chromium-browser
+  - export CHROME_BIN=/usr/bin/google-chrome
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 deploy:

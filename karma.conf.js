@@ -5,12 +5,30 @@ module.exports = function(config) {
   config.set({
     basePath: '',
     customLaunchers: {
-      ChromeTravis: {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
+      SLChrome: {
+        base: 'SauceLabs',
+        browserName: 'chrome',
+        platform: 'Windows 7',
+        version: '51'
+      },
+      SLFirefox: {
+        base: 'SauceLabs',
+        browserName: 'firefox',
+        version: '47'
+      },
+      SLEdge: {
+        base: 'SauceLabs',
+        browserName: 'MicrosoftEdge',
+        platform: 'Windows 10',
+        version: '13'
       }
     },
-    frameworks: ['jasmine', 'browserify'],
+    sauceLabs: {
+      testName: 'ErgJS Browser Compatability Tests',
+      startConnect: (process.env.TRAVIS) ? false : true,
+      tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER
+    },
+    frameworks: ['mocha', 'chai', 'browserify'],
     preprocessors: {
       'test/**/*.test.js': ['browserify']
     },
@@ -19,23 +37,26 @@ module.exports = function(config) {
       transform: ['babelify']
     },
     files: [
-      'node_modules/jasmine-promises/dist/jasmine-promises.js',
       'lib/erg.js',
       'test/**/*.test.js',
       { pattern: 'lib/runner.js', included: false, served: true },
       { pattern: 'test/dependency.js', included: false, served: true }
     ],
     exclude: [ ],
-    reporters: ['progress'],
+    reporters: ['mocha', 'saucelabs'],
+    client: {
+      mocha: {
+        reporter: 'spec'
+      }
+    },
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    browsers: [
-      (process.env.TRAVIS) ? 'ChromeTravis' : 'Chrome', 
-      'Firefox'
-    ],
-    singleRun: false,
-    concurrency: Infinity
-  })
+    logLevel: config.LOG_DEBUG,
+    browsers: ['SLChrome', 'SLFirefox', 'SLEdge'],
+    autoWatch: false,
+    singleRun: true,
+    concurrency: 1,
+    captureTimeout: 120000,
+    browserNoActivityTimeout: 30000
+  });
 }
