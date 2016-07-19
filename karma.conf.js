@@ -55,6 +55,13 @@ module.exports = function(config) {
     autoWatch: false,
     singleRun: true,
     concurrency: 1,
+    captureTimeout: 120000,
     browserNoActivityTimeout: 30000
   });
+
+  if (process.env.TRAVIS) {
+    var label = "TRAVIS #" + process.env.TRAVIS_BUILD_NUMBER + " (" + process.env.TRAVIS_BUILD_ID + ")";
+    config.sauceLabs.build = label;
+    config.sauceLabs.tunnelIdentifier = process.env.TRAVIS_JOB_NUMBER;
+  }
 }
