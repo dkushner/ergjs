@@ -36,8 +36,10 @@
 
 <p><code>ergjs</code> is a library that makes it easy to interact with Web Workers in your site. It removes the hassle of integrating Web Workers for specific applications by managing individual, or groups of web workers as general "task do-ers." </p>
 
-<p>Getting Started
-To use <code>ergjs</code> in your project, simply install via bower using:</p>
+<h3>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Started</h3>
+
+<p>To use <code>ergjs</code> in your project, simply install via bower using:</p>
 
 <pre><code>bower install ergjs
 </code></pre>
@@ -45,6 +47,18 @@ To use <code>ergjs</code> in your project, simply install via bower using:</p>
 <p>And include the relevant script tag in your document:</p>
 
 <div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>/bower_components/ergjs/lib/erg.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<h3>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">const</span> <span class="pl-c1">erg</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Erg</span>();
+
+<span class="pl-k">const</span> <span class="pl-c1">heavyTask</span> <span class="pl-k">=</span> (<span class="pl-smi">data</span>) <span class="pl-k">=&gt;</span> { <span class="pl-k">...</span> };
+<span class="pl-k">const</span> <span class="pl-c1">hugeData</span> <span class="pl-k">=</span> [ <span class="pl-k">...</span> ];
+
+<span class="pl-smi">erg</span>.<span class="pl-en">dispatch</span>(heavyTask, heavyData).<span class="pl-en">then</span>((<span class="pl-smi">result</span>) <span class="pl-k">=&gt;</span> { <span class="pl-k">...</span> });</pre></div>
+
+<p>It's that easy! Now your task can crunch serious data in the background while your UI renders like buttah. </p>
         </section>
 
         <footer>
