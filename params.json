@@ -1,0 +1,6 @@
+{
+  "name": "ergjs",
+  "tagline": "Simplified parallelism in the browser through Web Workers.",
+  "body": "### What is it?\r\n`ergjs` is a library that makes it easy to interact with Web Workers in your site. It removes the hassle of integrating Web Workers for specific applications by managing individual, or groups of web workers as general \"task do-ers.\" \r\n\r\n###\r\nGetting Started\r\nTo use `ergjs` in your project, simply install via bower using:\r\n```\r\nbower install ergjs\r\n```\r\nAnd include the relevant script tag in your document:\r\n```html\r\n<script src=\"/bower_components/ergjs/lib/erg.js\"></script>\r\n```",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
